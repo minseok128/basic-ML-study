@@ -36,16 +36,15 @@ def init_network():
     network['B'][1] = np.array([0.1, 0.2])
     network['W'][2] = np.array([[0.1, 0.3], [0.2, 0.4]])
     network['B'][2] = np.array([0.1, 0.2])
+    network['A'] = sigmoid
     return network
 
 def forward(network, x):
     max_level = len(network['W'])
-    y = x
-    i = 0
+    y, i = x, 0
     while i != max_level - 1:
-        w = network['W'][i]
-        b = network['B'][i]
-        y = sigmoid(y @ w + b)
+        w, b = network['W'][i], network['B'][i]
+        y = network['A'](y @ w + b)
         i += 1
     y = identity(y @ network['W'][max_level - 1] + network['B'][max_level - 1])
     return y
