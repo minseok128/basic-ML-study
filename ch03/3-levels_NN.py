@@ -8,7 +8,8 @@ def identity(x):
     return x
 
 def softmax(x):
-    exp_a = np.exp(x)
+    c = max(x)
+    exp_a = np.exp(x - c)
     return (exp_a / np.sum(exp_a))
 
 # X = np.array([1.0, 0.5])
