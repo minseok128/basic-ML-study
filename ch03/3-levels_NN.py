@@ -5,7 +5,11 @@ def sigmoid(x):
     return 1 / (1 + np.exp(-x))
 
 def identity(x):
-	return x
+    return x
+
+def softmax(x):
+    exp_a = np.exp(x)
+    return (exp_a / np.sum(exp_a))
 
 # X = np.array([1.0, 0.5])
 # W1 = np.array([[0.1, 0.3, 0.5], [0.2, 0.4, 0.6]])
@@ -36,7 +40,8 @@ def init_network():
     network['B'][1] = np.array([0.1, 0.2])
     network['W'][2] = np.array([[0.1, 0.3], [0.2, 0.4]])
     network['B'][2] = np.array([0.1, 0.2])
-    network['A'] = sigmoid
+    network['Af'] = sigmoid
+    network['Of'] = identity
     return network
 
 def forward(network, x):
@@ -44,9 +49,9 @@ def forward(network, x):
     y, i = x, 0
     while i != max_level - 1:
         w, b = network['W'][i], network['B'][i]
-        y = network['A'](y @ w + b)
+        y = network['Af'](y @ w + b)
         i += 1
-    y = identity(y @ network['W'][max_level - 1] + network['B'][max_level - 1])
+    y = network['Of'](y @ network['W'][max_level - 1] + network['B'][max_level - 1])
     return y
 
 network = init_network()
